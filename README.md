@@ -1,9 +1,12 @@
 # Urban Airship CodeIgniter Library
 
+I basically wrapped up the code available here into a library: https://support.urbanairship.com/customer/portal/articles/91072-simple-push-using-php-amp-the-api
+
 ## Requirements
 
 1. PHP 5.1+
 2. CodeIgniter 2.0.0+
+3. cURL
 
 ## Usage
 
@@ -28,5 +31,4 @@
 	// Http code is here
 	echo $http_code
 	
-I basically wrapped up the code available here into a library: https://support.urbanairship.com/customer/portal/articles/91072-simple-push-using-php-amp-the-api	
 This is just for the push, the rest is still coming. I appreciate the help.
