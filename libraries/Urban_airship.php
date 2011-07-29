@@ -14,16 +14,15 @@ class Urban_airship {
 	$this -> mastersecret = $this->_ci->config->item('UA_application_master_secret');	
 	}
 
-    public function push($tokens, $badge, $alert, $sound)
+    public function push($tokens, $aps)
     {
-	$pushurl = "https://go.urbanairship.com/api/push/";
-	$contents = array(); 
-	$contents['badge'] = $badge; 
-	$contents['alert'] = $alert; 
-	$contents['sound'] = $sound; 
-	$push = array("device_tokens" => $tokens, "aps" => $contents); 
+	$url = "https://go.urbanairship.com/api/push/";
+	$aps['badge'] = isset($aps['badge']) ? $aps['badge'] : '';
+	$aps['alert'] = isset($aps['alert']) ? $aps['alert'] : '';
+	//if there's no sound set, it shouldn't be kept out.
+	$push = array("device_tokens" => $tokens, "aps" => $aps); 
 	$json = json_encode($push);
-	return $this->_send($pushurl, $json);
+	return $this->_send($url, $json);
     }
 
 	private function _send($url, $json){
