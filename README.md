@@ -1,7 +1,5 @@
 # Urban Airship CodeIgniter Library
 
-CodeIgniter-REST Client is a CodeIgniter library which makes it easy to do use REST services/API's such as Twitter, Facebook and Flickr, wether they are public or hidden behind HTTP Basic/Digest.
-
 ## Requirements
 
 1. PHP 5.1+
