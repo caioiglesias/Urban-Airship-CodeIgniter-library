@@ -14,26 +14,41 @@ class Urban_airship {
 	$this -> mastersecret = $this->_ci->config->item('UA_application_master_secret');	
 	}
 
+	public function register($token, $payload = null){
+	$url = 'api/device_tokens/' . $token . '/';
+	return $this->_send(1, $url, $payload);	
+	}
+
     public function push($tokens, $aps)
     {
-	$url = "https://go.urbanairship.com/api/push/";
+	$url = "api/push/";
 	$aps['badge'] = isset($aps['badge']) ? $aps['badge'] : '';
 	$aps['alert'] = isset($aps['alert']) ? $aps['alert'] : '';
-	//if there's no sound set, it shouldn't be kept out.
-	$push = array("device_tokens" => $tokens, "aps" => $aps); 
-	$json = json_encode($push);
-	return $this->_send($url, $json);
+	$payload = array("device_tokens" => $tokens, "aps" => $aps); 
+	return $this->_send(0, $url, $payload);
     }
 
-	private function _send($url, $json){
-	$session = curl_init($url); 
-	curl_setopt($session, CURLOPT_USERPWD, $this -> key . ':' . $this -> mastersecret); 
+	private function _send($method, $url, $payload = null){
+	$session = curl_init('https://go.urbanairship.com/' . $url);
+	if($payload !== null){
+	$payload = json_encode($payload);		
+	curl_setopt($session, CURLOPT_POSTFIELDS, $payload); 
+	curl_setopt($session, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));		
+	}
+	switch ($method) {
+		case 0:
+		curl_setopt($session, CURLOPT_USERPWD, $this -> key . ':' . $this -> mastersecret); 
+		curl_setopt($session, CURLOPT_POST, True); 
+			break;
+		
+		case 1:
+		curl_setopt($session, CURLOPT_USERPWD, $this -> key . ':' . $this -> secret); 
+		curl_setopt($session, CURLOPT_CUSTOMREQUEST, 'PUT');
+			break;
+	}
 	curl_setopt($session, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); 
-	curl_setopt($session, CURLOPT_POST, True); 
-	curl_setopt($session, CURLOPT_POSTFIELDS, $json); 
 	curl_setopt($session, CURLOPT_HEADER, False); 
 	curl_setopt($session, CURLOPT_RETURNTRANSFER, True); 
-	curl_setopt($session, CURLOPT_HTTPHEADER, array('Content-Type:application/json')); 
 	curl_exec($session); 	
 	$response = curl_getinfo($session);
 	curl_close($session);
