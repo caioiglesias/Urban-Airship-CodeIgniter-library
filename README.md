@@ -31,4 +31,3 @@ I basically wrapped up the code available here into a library: https://support.u
 	// Http code is here
 	echo $http_code
 	
-This is just for the push, the rest is still coming. I appreciate the help.
